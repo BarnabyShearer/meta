@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# You need to source
+export GITHUB_TOKEN=$(getpw github_token)
+
+terraform "$@"
