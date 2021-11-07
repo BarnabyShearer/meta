@@ -1,7 +1,7 @@
 locals {
   repos_defaults = {
     description = null
-    license  = "GPL-2.0"
+    license  = "gpl2"
     topics   = ["hacktoberfest"]
     archived = false
     link     = null
@@ -22,16 +22,15 @@ locals {
     }
     alexa-ping = {
       description = "Amazon Alexa skill to check website is responding."
-      link        = "https://www.amazon.co.uk/dp/b073vpbjdw/"
     }
     ankle = {
       description = "A UI for visualizing a stream of location events, such as showing packages being delivered."
-      license     = "BSD-2-Clause"
+      license     = "bsd2"
     }
     aoc = {
       description = "My Advent of Code."
       link        = "https://adventofcode.com/"
-      license     = "MIT"
+      license     = "mit"
       topics      = ["advent-of-code"]
     }
     basic_remote_shell = {
@@ -42,8 +41,8 @@ locals {
     }
     DockerFromScratch = {
       description = "Docker From Scratch."
-      license     = "MIT"
-      topics      = ["docker"]
+      license     = "mit"
+      topics      = ["docker", "dockerfile"]
     }
     dogoban = {
       description = "Your trusty sheepdog is hungry. Help them corral the animals needed to produce their balanced food."
@@ -51,12 +50,12 @@ locals {
     }
     efm8 = {
       description = "Flash via AN945: EFM8 Factory Bootloader HID."
-      license     = "BSD-2-Clause"
+      license     = "bsd3"
       publish     = ["pypi.org", "readthedocs.org"]
     }
     email-report-checker = {
       description = "RFC 7489 & 8460 SMTP Report Monitoring Utilities."
-      license     = "BSD-3-Clause"
+      license     = "bsd3"
     }
     imax_b8_serial = {
       description = "Serial interface to monitor LiPo charger."
@@ -71,19 +70,19 @@ locals {
     }
     lektor-make = {
       description = "Lektor plugin to run `make lektor` for custom build systems."
-      license     = "MIT"
+      license     = "mit"
       topics      = ["lektor"]
       publish     = ["pypi.org", "readthedocs.org"]
     }
     psycopg-pool-prometheus = {
       description = "Exposes the pool stats maintained by psycopg3's connection pool to prometheus."
-      license     = "MIT"
+      license     = "mit"
       topics      = ["prometheus", "psycopg3"]
       publish     = ["pypi.org", "readthedocs.org"]
     }
     pynfc = {
       description = "`ctypeslib` converted libnfc and libfreefare."
-      license     = "BSD-2-Clause"
+      license     = "bsd3"
       publish     = ["pypi.org", "readthedocs.org"]
     }
     pypg = {
@@ -95,7 +94,7 @@ locals {
     scadhelper = {
       description = "A library to make SCAD easier."
       topics      = ["3d-printing", "openscad", "openscad-library"]
-      license     = "CC BY 3.0"
+      license     = "https://creativecommons.org/licenses/by/3.0/legalcode.txt"
     }
     things = {
       description = "Designs for lasercutting, 3D printing, milling etc."
@@ -110,7 +109,7 @@ locals {
     }
     Anders = {
       description = "WIP Android app for Chinesium BLE cooking/BBQ thermometers."
-      license     = "GPL-3.0"
+      license     = "gpl3"
       topic       = ["android", "ble"]
     }
     anemopen = {
@@ -127,31 +126,31 @@ locals {
     }
     autopi = {
       description = "Quick and dirty script to get a headless Raspberry Pi ready to use."
-      license     = "Apache"
+      license     = "apache"
     }
     aux_lcd = {
       description = "Ultra compact PCB using a battery, memory lcd, and bluetooth chip."
     }
     ble_temp_probe_decoder = {
       description = "Bluetooth LE Cooking/BBQ temperature sensor."
-      license     = "Apache"
+      license     = "apache"
     }
     dash = {
       description = "Amazon Dash button utils."
     }
     DroidRap = {
       description = "Minimal G-Code host for Android."
-      license     = "GPL-3.0"
+      license     = "gpl3"
       topic       = ["android"]
     }
     eyepatch = {
       description = "Android camera monitor headset (phone are cheeper then eyes when using lasers)."
-      license     = "GPL-3.0"
+      license     = "gpl3"
       topic       = ["android"]
     }
     falcon = {
       description = "Demos for the Novint Falcon haptic controler."
-      license     = "BSD-2-Clause"
+      license     = "bsd3"
     }
     gcode2mint = {
       description = "Allows driving the Denford MicroMill 2000 (and hopfully similar devices) via standard g-code. "
@@ -162,7 +161,7 @@ locals {
     }
     MemoryLCD = {
       description = "STM32F4 Sharp Memory LCD."
-      license     = "BSD-2-Clause"
+      license     = "bsd3"
       topics      = ["arduino"]
     }
     microformats = {
@@ -180,7 +179,7 @@ locals {
     }
     phone_chord = {
       description = "An 8-key chording BLE HID keyboard."
-      license     = "MIT"
+      license     = "mit"
       topics      = ["arduino"]
     }
     PiSlideshow = {
@@ -188,11 +187,11 @@ locals {
     }
     ppm2joy = {
       description = "vjoy module with decodes a 6 channel PPM signal captured via SUMP."
-      license     = "GPL-3.0"
+      license     = "gpl3"
     }
     pyquiz = {
       description = "Run a simple button mashing quiz."
-      license     = "Apache"
+      license     = "apache"
       topic       = ["game"]
     }
     rt100 = {
@@ -209,7 +208,7 @@ locals {
     }
     slushie = {
       description = "Smothieboard derivative."
-      license     = "CERN OHL 1.2"
+      license     = "https://ohwr.org/project/cernohl/uploads/505f27c2a8a10e528b079be3c9d876c5/cern_ohl_v_1_2.txt"
     }
     stereo = {
       description = "Try and get two USB cameras in sync to create stereo images."
@@ -219,7 +218,7 @@ locals {
     }
     u2f-zero = {
       description = "U2F USB token optimized for physical security, affordability, and style."
-      license     = "BSD-2-Clause"
+      license     = "bsd3"
 
     }
     wavey = {
@@ -231,12 +230,12 @@ locals {
     }
     xarcade = {
       description = "Simple interface to plug an X-Arcade controller in as a USB keyboard."
-      license     = "MIT"
+      license     = "mit"
     }
     xkcdris = {
       description = "Game inspired by xkcd \"Hell\"."
       link        = "https://xkcd.com/724/"
-      license     = "MIT"
+      license     = "mit"
       topic       = ["xkcd", "tetris"]
     }
     yugioh = {

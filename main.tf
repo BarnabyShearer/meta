@@ -16,7 +16,7 @@ resource "github_repository" "main" {
 
   license_template = each.value.license
 
-  #archived = each.value.archived
+  archived = each.value.archived
 
   archive_on_destroy = true
 
