@@ -1,3 +1,6 @@
+variable "PYPI_TOKEN" {
+  type = string
+}
 resource "github_repository_file" "pyproject" {
   for_each   = { for k, v in local.repos : k => v if contains(v.check, "python3") }
   file       = "pyproject.toml"
@@ -174,3 +177,15 @@ EOF
   repository = github_repository.main[each.key].name
 }
 
+resource "macaroons_pypi_token" "pypi_token" {
+  for_each     = { for k, v in local.repos : k => v if contains(v.publish, "pypi.org") }
+  source_token = var.PYPI_TOKEN
+  project      = each.key
+}
+
+resource "github_actions_secret" "pypi_token" {
+  for_each        = { for k, v in local.repos : k => v if contains(v.publish, "pypi.org") }
+  repository      = github_repository.main[each.key].name
+  secret_name     = "PYPI_API_TOKEN"
+  plaintext_value = macaroons_pypi_token.pypi_token[each.key].token
+}

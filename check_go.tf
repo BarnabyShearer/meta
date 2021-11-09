@@ -114,7 +114,7 @@ resource "pgp_key" "ci" {
   comment = "Used in Github actions to sign releases."
 }
 
-resource "github_actions_secret" "example_secret" {
+resource "github_actions_secret" "gpg_private_key" {
   for_each        = { for k, v in local.repos : k => v if contains(v.publish, "github.com") }
   repository      = github_repository.main[each.key].name
   secret_name     = "GPG_PRIVATE_KEY"

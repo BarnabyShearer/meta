@@ -3,5 +3,6 @@
 # You need to source
 export GITHUB_TOKEN=$(getpw github_token)
 export TF_VAR_GITHUB_TOKEN=$GITHUB_TOKEN
+export TF_VAR_PYPI_TOKEN=$(getpw pypi_token)
 
 terraform "$@"

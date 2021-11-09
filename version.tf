@@ -3,6 +3,9 @@ terraform {
     pgp = {
       source = "ekristen/pgp"
     }
+    macaroons = {
+      source = "BarnabyShearer/macaroons"
+    }
   }
 }
 
