@@ -5,6 +5,8 @@ resource "github_repository" "main" {
   description  = each.value.description
   homepage_url = each.value.link
 
+  auto_init = true
+
   has_issues   = true
   has_projects = false
   has_wiki     = false
@@ -14,13 +16,9 @@ resource "github_repository" "main" {
   allow_auto_merge       = true
   delete_branch_on_merge = true
 
-  license_template = each.value.license
-
-  archived = each.value.archived
-
   archive_on_destroy = true
 
-  topics = each.value.topics
+  topics = [for topic in each.value.topics : lower(topic)]
 
   vulnerability_alerts = true
 }
