@@ -6,7 +6,7 @@ resource "github_repository_file" "pyproject" {
   file       = "pyproject.toml"
   content    = <<EOF
 [build-system]
-requires = ["setuptools", "wheel", "setuptools_scm"]
+requires = ["setuptools", "wheel", "setuptools_scm"%{for lib in lookup(each.value, "build", [])}, "${ lib }"%{endfor}]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
@@ -25,19 +25,19 @@ max-complexity = 10
 
 [tool.coverage.run]
 branch = true
-command_line = "-m pytest -v"
+command_line = "-m pytest"
 omit = [".tox/*"]
 
 [tool.coverage.report]
 show_missing = true
 
 [tool.pytest.ini_options]
-addopts = "-p no:cacheprovider"
+addopts = "-p no:cacheprovider --doctest-modules -v"
 
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-isolated_build = True
+isolated_build = true
 envlist = %{if contains(each.value.check, "python2")}py27,%{endif}py3{7,8,9,10}
 
 [gh-actions]
@@ -136,10 +136,9 @@ packages = find:
 install_requires = %{for dep in lookup(each.value, "requires", [])}
     ${dep}%{endfor}
 python_requires = >=%{if contains(each.value.check, "python2")}2.7%{else}3.7%{endif}
-include_package_data = True
 
 [options.package_data]
-* = py.typed
+* = py.typed, *.c, *.h
 %{if lookup(each.value, "scripts", {}) != {} }
 [options.entry_points]
 console_scripts = %{for script, entry in each.value.scripts}

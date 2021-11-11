@@ -102,7 +102,11 @@ locals {
     pynfc = {
       description = "`ctypeslib` converted libnfc and libfreefare."
       license     = "bsd-3-clause"
+      topics      = ["RFID", "NFC", "Mifare", "Desfire"]
+      check       = ["python2", "python3"]
       publish     = ["pypi.org", "readthedocs.org"]
+      apt         = ["libclang-dev", "libfreefare-dev"]
+      build       = ["ctypeslib2"]
     }
     pypg = {
       description = "Minimal Toy PGP in pure python."
