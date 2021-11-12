@@ -6,7 +6,7 @@ resource "github_repository_file" "pyproject" {
   file       = "pyproject.toml"
   content    = <<EOF
 [build-system]
-requires = ["setuptools", "wheel", "setuptools_scm"%{for lib in lookup(each.value, "build", [])}, "${ lib }"%{endfor}]
+requires = ["setuptools", "wheel", "setuptools_scm"%{for lib in lookup(each.value, "build", [])}, "${lib}"%{endfor}]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
@@ -144,6 +144,9 @@ python_requires = >=%{if contains(each.value.check, "python2")}2.7%{else}3.7%{en
 console_scripts = %{for script, entry in each.value.scripts}
     ${script} = ${entry}%{endfor}
 %{endif}
+
+[bdist_wheel]
+universal=1
 EOF
   repository = github_repository.main[each.key].name
 }

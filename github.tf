@@ -1,6 +1,6 @@
 locals {
   repos_defaults = {
-    description = null
+    description = ""
     license     = "gpl-2.0"
     topics      = ["hacktoberfest"]
     link        = null
@@ -86,6 +86,8 @@ locals {
       description = "Lektor plugin to run `make lektor` for custom build systems."
       license     = "mit"
       topics      = ["lektor"]
+      requires    = ["lektor"]
+      check       = ["python2", "python3"]
       publish     = ["pypi.org", "readthedocs.org"]
     }
     psycopg-pool-prometheus = {
@@ -111,6 +113,12 @@ locals {
     pypg = {
       description = "Minimal Toy PGP in pure python."
     }
+    readthedocs = {
+      description = "Golang API client."
+      check       = ["go"]
+      license     = "mpl-2.0"
+      version     = "v3"
+    }
     rov = {
       desription = "Underwater ROV Prototype."
     }
@@ -120,11 +128,22 @@ locals {
       license     = "cc-by-4.0"
     }
     terraform-provider-macaroons = {
-      description = "Macaroons are flexible authorization credentials that support decentralized delegation, attenuation, and verification. Given an existing credential this provider can attenuate it for a specific use."
+      description = <<EOF
+Macaroons are flexible authorization credentials that support decentralized delegation, attenuation, and verification. Given an existing credential this provider can attenuate it for a specific use.
+
+At the moment it is tested for scoping a pypi.org's API token per project (PRs for other uses welcome).
+EOF
       topics      = ["terraform", "terraform-provider", "macaroons", "pypi"]
       license     = "mpl-2.0"
       check       = ["go"]
-      publish     = ["github.com"]
+      publish     = ["github.com", "registry.terraform.io"]
+    }
+    terraform-provider-readthedocs = {
+      description = "Register readthedocs.org projects."
+      topics      = ["terraform", "terraform-provider", "readthedocs"]
+      license     = "mpl-2.0"
+      check       = ["go"]
+      publish     = ["github.com", "registry.terraform.io"]
     }
     things = {
       description = "Designs for lasercutting, 3D printing, milling etc."

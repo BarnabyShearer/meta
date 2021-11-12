@@ -6,6 +6,9 @@ terraform {
     macaroons = {
       source = "BarnabyShearer/macaroons"
     }
+    readthedocs = {
+      source = "BarnabyShearer/readthedocs"
+    }
   }
 }
 

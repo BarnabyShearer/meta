@@ -2,7 +2,7 @@ resource "github_repository" "main" {
   for_each = local.repos
 
   name         = each.key
-  description  = each.value.description
+  description  = split("\n", each.value.description)[0]
   homepage_url = each.value.link
 
   auto_init = true

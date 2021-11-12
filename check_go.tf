@@ -1,5 +1,5 @@
 resource "github_repository_file" "goreleaser" {
-  for_each   = { for k, v in local.repos : k => v if contains(v.check, "go") }
+  for_each   = { for k, v in local.repos : k => v if contains(v.publish, "github.com") }
   file       = ".goreleaser.yml"
   content    = <<EOF
 builds:
@@ -58,7 +58,11 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
+%{if lookup(each.value, "version", "") != ""}
+defaults:
+  run:
+    working-directory: ${each.value.version}
+%{endif}
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -1,3 +1,9 @@
+resource "readthedocs_project" "readthedocs" {
+  for_each   = { for k, v in local.repos : k => v if contains(v.publish, "readthedocs.org") }
+  name       = github_repository.main[each.key].name
+  repository = github_repository.main[each.key].http_clone_url
+}
+
 resource "github_repository_file" "readthedocs" {
   for_each   = { for k, v in local.repos : k => v if contains(v.publish, "readthedocs.org") }
   file       = ".readthedocs.yaml"
