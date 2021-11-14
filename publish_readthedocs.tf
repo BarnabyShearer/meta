@@ -10,6 +10,12 @@ resource "github_repository_file" "readthedocs" {
   content    = <<EOF
 version: 2
 formats: all
+build:
+  os: ubuntu-20.04
+  tools:
+    python: "3.10"%{if lookup(each.value, "apt", []) != []}
+  apt_packages:%{for package in each.value.apt}
+  - ${package}%{endfor}%{endif}
 python:
   install:
   - requirements: docs/requirements.txt
@@ -29,7 +35,7 @@ resource "github_repository_file" "docs_config" {
 
 extensions = ["sphinxcontrib.autoprogram", "sphinx.ext.autodoc"]
 
-project = "${each.value.description}"
+project = "${split("\n", each.value.description)[0]}"
 copyright = "2021, Barnaby Shearer"
 author = "Barnaby Shearer"
 

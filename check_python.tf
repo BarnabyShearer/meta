@@ -32,7 +32,7 @@ omit = [".tox/*"]
 show_missing = true
 
 [tool.pytest.ini_options]
-addopts = "-p no:cacheprovider --doctest-modules -v"
+addopts = "-p no:cacheprovider --doctest-modules -v tests"
 
 [tool.tox]
 legacy_tox_ini = """
@@ -67,11 +67,16 @@ commands =
     coverage report --fail-under=100
 %{if contains(each.value.check, "python2")}
 [testenv:py27]
+skipsdist = True
+skip_install = True
 deps =
     mock
     pytest
     coverage[toml]
 commands =
+    pip3 install build
+    python3 -m build
+    bash -c "python2 -m pip install dist/*.whl"
     coverage run
     coverage report --fail-under=100
 %{endif}
@@ -117,7 +122,7 @@ resource "github_repository_file" "setup_cfg" {
   content    = <<EOF
 [metadata]
 name = ${each.key}
-description = ${each.value.description}
+description = ${split("\n", each.value.description)[0]}
 long_description = file: README.rst
 keywords =%{for keyword in each.value.topics} ${keyword}%{endfor}
 author = Barnaby Shearer
@@ -144,7 +149,6 @@ python_requires = >=%{if contains(each.value.check, "python2")}2.7%{else}3.7%{en
 console_scripts = %{for script, entry in each.value.scripts}
     ${script} = ${entry}%{endfor}
 %{endif}
-
 [bdist_wheel]
 universal=1
 EOF
