@@ -1,7 +1,9 @@
 resource "readthedocs_project" "readthedocs" {
-  for_each   = { for k, v in local.repos : k => v if contains(v.publish, "readthedocs.org") }
-  name       = github_repository.main[each.key].name
-  repository = github_repository.main[each.key].http_clone_url
+  for_each           = { for k, v in local.repos : k => v if contains(v.publish, "readthedocs.org") }
+  name               = github_repository.main[each.key].name
+  repository         = github_repository.main[each.key].http_clone_url
+  analytics_disabled = true
+  default_branch     = "main"
 }
 
 resource "github_repository_file" "readthedocs" {
@@ -78,6 +80,52 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+EOF
+  repository = github_repository.main[each.key].name
+}
+
+resource "github_repository_file" "docs_index" {
+  for_each   = { for k, v in local.repos : k => v if contains(v.publish, "readthedocs.org") }
+  file       = "docs/index.rst"
+  content    = <<EOF
+${each.key}
+${join("", [for c in range(length(each.key)) : "="])}
+%{if each.value.link != null}
+[${substr(each.value.link, 8, -1)}](${each.value.link})
+%{endif}
+${each.value.description}
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   install
+   ${lower(replace(each.key, "-", "_"))}%{for doc in each.value.docs}
+   ${doc}%{endfor}
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+EOF
+  repository = github_repository.main[each.key].name
+}
+
+
+resource "github_repository_file" "docs_install" {
+  for_each   = { for k, v in local.repos : k => v if contains(v.publish, "readthedocs.org") }
+  file       = "docs/install.rst"
+  content    = <<EOF
+Installation
+============
+
+::
+
+    %{if lookup(each.value, "apt", []) != []}sudo apt install%{for package in each.value.apt} ${package}%{endfor}
+    %{endif}python3 -m pip install ${each.key}
+
 EOF
   repository = github_repository.main[each.key].name
 }

@@ -17,9 +17,16 @@ ${join("", [for c in range(length(each.key)) : "="])}%{else}# ${each.key}%{endif
 %{endif}%{if each.value.link != null}
 [${substr(each.value.link, 8, -1)}](${each.value.link})
 %{endif}
-${each.value.description}
+${split("\n", each.value.description)[0]}
+%{if contains(each.value.publish, "pypi.org")}
+Install
+-------
 
+::
 
+    %{if lookup(each.value, "apt", []) != []}sudo apt install%{for package in each.value.apt} ${package}%{endfor}
+    %{endif}python3 -m pip install ${each.key}
+%{endif}${join("\n", slice(split("\n", each.value.description), 1, length(split("\n", each.value.description))))}
 EOF
   repository = github_repository.main[each.key].name
 }

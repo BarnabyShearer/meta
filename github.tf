@@ -2,15 +2,11 @@ locals {
   repos_defaults = {
     description = ""
     license     = "gpl-2.0"
-    topics      = ["hacktoberfest"]
+    topics      = []
     link        = null
     publish     = []
     check       = []
-  }
-
-  repos_todo = {
-    htmloverpdf = {}
-    pgwebsocket = {}
+    docs        = []
   }
 
   repos_repos = {
@@ -79,6 +75,7 @@ You can also cross-compile:
 EOF
       license     = "mit"
       topics      = ["docker", "dockerfile"]
+      publish     = ["hub.docker.com"]
     }
     dogoban = {
       description = <<EOF
@@ -101,15 +98,26 @@ They can only herd animals away from them; so be careful not to get stuck in a c
     　　　⬛⬛⬛⬛⬛　　
 EOF
       topics      = ["game"]
+      publish     = ["pypi.org"]
     }
     efm8 = {
       description = <<EOF
 Flash via AN945: EFM8 Factory Bootloader HID.
 
+Usage
+-----
+
+Communication is over USB-HID. This is implemented via the `hidapi <https://github.com/trezor/cython-hidapi>`__ pthon wrapper for the `hidapi <https://github.com/signal11/hidapi>`__ native library.
+
+On linux you can use udev to grant access:
+
 ::
 
-    sudo apt install libusb-1.0-0-dev libudev-dev python-dev
-    pip install efm8
+    echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="10c4", MODE="0666"' | sudo tee /etc/udev/rules.d/70-silabs.rules
+    udevadm trigger
+
+::
+
     efm8 firmware.hex
 
 Also includes an example that resets a https://u2fzero.com/ into the bootloader and flashes in one command.
@@ -129,6 +137,7 @@ EOF
       apt         = ["libusb-1.0-0-dev", "libudev-dev"]
       publish     = ["pypi.org", "readthedocs.org"]
       topics      = ["EFM8", "AN945", "HID", "Bootloader"]
+      docs        = ["efm8_read", "u2fzero"]
       scripts = {
         efm8      = "efm8.__main__:main"
         efm8_read = "efm8.__main__:read"
@@ -146,7 +155,8 @@ RFC 7489 & 8460 SMTP Report Monitoring Utilities.
 
 Note these are for my hobby domain, do not try running them on even moderate traffic MTAs
 
-## RFC 7489 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
+RFC 7489 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
+--------------------------------------------------------------------------------
 
 First ensure your DMARC DNS TXT record contains `rua` and `ruf` to request reports:
 
@@ -154,33 +164,84 @@ First ensure your DMARC DNS TXT record contains `rua` and `ruf` to request repor
 
 Then load the reports via IMAP:
 
+::
+
     ./dmarc.py m.zi.is b@zi.is Archive > dmarc.json
 
 And report your statistics
+
+::
 
     jq '[ .[].record.row | select(.source_ip == "68.183.35.248") | select(.policy_evaluated.dkim == "pass") | .count | tonumber] | add' dmarc.json
     jq '[ .[].record.row | select(.source_ip == "68.183.35.248") | select(.policy_evaluated.dkim == "fail") | .count | tonumber] | add' dmarc.json
 
 
-## RFC 8460 SMTP TLS Reporting
+RFC 8460 SMTP TLS Reporting
+---------------------------
 
 First create a DNS TXT record to request reports:
+
+::
 
     _smtp._tls.zi.is.	3600	IN	TXT	"v=TLSRPTv1;rua=mailto:b+tls@zi.is"
 
 Then load the reports via IMAP:
 
+::
+
     ./tls.py m.zi.is b@zi.is Archive > tls.json
 
 And report your statistics
 
+::
+
     jq '[.[] | [.policies[].summary["total-successful-session-count"]] | add] | add' tls.json
     jq '[.[] | [.policies[].summary["total-failure-session-count"]] | add] | add' tls.json
+
 EOF
       license     = "bsd-3-clause"
+      check       = ["python3"]
+      scripts = {
+        "dmarc.py" = "email_report_checker.dmarc:main"
+        "tls.py"   = "email_report_checker.tls:main"
+      }
+      publish = ["pypi.org", "readthedocs.org"]
+    }
+    htmloverpdf = {
+      description = <<EOF
+Render a HTML overlay over existing PDF files.
+
+A wrapper for http://weasyprint.org/ which allows compositing with existing PDF files.
+            
+It parses the HTML looking for <img> tags with src urls ending ".pdf". Each one begins a new page and copies all source pages overlaying the weasyprint output.
+The magic value "blank.pdf" outputs sections HTML without overlaying.
+
+Usage
+-----
+
+::
+
+    python -m htmloverpdf < test.html > test.pdf
+
+EOF
+      license     = "bsd-3-clause"
+      topics      = ["pdf"]
+      scripts = {
+        htmloverpdf = "htmloverpdf.__main__:main"
+      }
+      apt      = ["libgirepository1.0-dev", "gir1.2-poppler-0.18", "gir1.2-pango-1.0"]
+      requires = ["weasyprint==52.*", "pygobject", "cairocffi", "lxml", "lxml-stubs"]
+      check    = ["python3"]
+      publish  = ["pypi.org", "readthedocs.org"]
     }
     imax_b8_serial = {
       description = "Serial interface to monitor LiPo charger."
+      requires    = ["pyserial"]
+      scripts = {
+        imax_b8_serial = "imax_b8_serial.__main__:main"
+      }
+      check   = ["python3"]
+      publish = ["pypi.org", "readthedocs.org"]
     }
     kibblekhaos = {
       description = "Your trusty space dog is hungry. You have travelled to the farm belt where the nutrient asteroids grow."
@@ -198,6 +259,42 @@ EOF
       check       = ["python2", "python3"]
       publish     = ["pypi.org", "readthedocs.org"]
     }
+    pgwebsocket = {
+      description = <<EOF
+Async websocket to PostgreSQL proxy.
+
+Usage
+-----
+
+::
+
+    from pgwebsocket import PgWebsocket
+    
+    app = PgWebsocket(
+        "postgresql://"
+    )
+    
+    @app.on_connect
+    async def on_connect(ctx):
+        """"""
+        ctx.subscribed = []
+        await ctx.execute("LISTEN all;")
+    
+    @app.on_disconnect
+    async def on_disconnect(ctx):
+        """"""
+        await ctx.execute("UNLISTEN all;")
+    
+    if __name__ == '__main__':
+        app.run()
+
+EOF
+      license     = "gpl-2.0"
+      topics      = ["postgresql"]
+      requires    = ["aiohttp", "psycopg2"]
+      check       = ["python3"]
+      publish     = ["pypi.org", "readthedocs.org"]
+    }
     psycopg-pool-prometheus = {
       description = "Expose metrics maintained by psycopg3's connection pool to prometheus."
       license     = "mit"
@@ -212,13 +309,6 @@ EOF
     pynfc = {
       description = <<EOF
 `ctypeslib` converted libnfc and libfreefare.
-
-Install
--------
-::
-
-    sudo apt install libfreefare-dev
-    pip install pynfc
 
 Usage
 -----
