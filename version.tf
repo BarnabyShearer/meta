@@ -9,6 +9,9 @@ terraform {
     readthedocs = {
       source = "BarnabyShearer/readthedocs"
     }
+    dockerhub = {
+      source = "BarnabyShearer/dockerhub"
+    }
   }
 }
 

@@ -53,7 +53,7 @@ EOF
       description = <<EOF
 Builds docker images for a simple Python + Postgres App from scratch.
 
-Made possible by [Linux From Scratch](http://www.linuxfromscratch.org/).
+Made possible by [Linux From Scratch](https://www.linuxfromscratch.org/).
 
 ![That is not a Dockerfile](./meme.jpg)
 
@@ -76,6 +76,13 @@ EOF
       license     = "mit"
       topics      = ["docker", "dockerfile"]
       publish     = ["hub.docker.com"]
+    }
+    dockerhub = {
+      description = "Golang API client."
+      check       = ["go"]
+      publish     = ["pkg.go.dev"]
+      license     = "mpl-2.0"
+      version     = "v2"
     }
     dogoban = {
       description = <<EOF
@@ -211,7 +218,7 @@ EOF
       description = <<EOF
 Render a HTML overlay over existing PDF files.
 
-A wrapper for http://weasyprint.org/ which allows compositing with existing PDF files.
+A wrapper for https://weasyprint.org/ which allows compositing with existing PDF files.
             
 It parses the HTML looking for <img> tags with src urls ending ".pdf". Each one begins a new page and copies all source pages overlaying the weasyprint output.
 The magic value "blank.pdf" outputs sections HTML without overlaying.
@@ -221,7 +228,7 @@ Usage
 
 ::
 
-    python -m htmloverpdf < test.html > test.pdf
+    htmloverpdf < test.html > test.pdf
 
 EOF
       license     = "bsd-3-clause"
@@ -230,9 +237,9 @@ EOF
         htmloverpdf = "htmloverpdf.__main__:main"
       }
       apt      = ["libgirepository1.0-dev", "gir1.2-poppler-0.18", "gir1.2-pango-1.0"]
-      requires = ["weasyprint==52.*", "pygobject", "cairocffi", "lxml", "lxml-stubs"]
+      requires = ["weasyprint<53", "pygobject", "pycairo", "cairocffi", "lxml", "lxml-stubs"]
       check    = ["python3"]
-      publish  = ["pypi.org", "readthedocs.org"]
+      publish  = ["pypi.org", "readthedocs.org", "hub.docker.com"]
     }
     imax_b8_serial = {
       description = "Serial interface to monitor LiPo charger."
@@ -266,24 +273,19 @@ Async websocket to PostgreSQL proxy.
 Usage
 -----
 
-::
+.. code-block:: python
 
     from pgwebsocket import PgWebsocket
     
-    app = PgWebsocket(
-        "postgresql://"
-    )
+    app = PgWebsocket("")
     
     @app.on_connect
-    async def on_connect(ctx):
-        """"""
-        ctx.subscribed = []
-        await ctx.execute("LISTEN all;")
+    async def _on_connect(ctx):
+        await ctx.execute("LISTEN clients;")
     
     @app.on_disconnect
-    async def on_disconnect(ctx):
-        """"""
-        await ctx.execute("UNLISTEN all;")
+    async def _on_disconnect(ctx):
+        await ctx.execute("UNLISTEN clients;")
     
     if __name__ == '__main__':
         app.run()
@@ -291,7 +293,7 @@ Usage
 EOF
       license     = "gpl-2.0"
       topics      = ["postgresql"]
-      requires    = ["aiohttp", "psycopg2"]
+      requires    = ["aiohttp", "psycopg"]
       check       = ["python3"]
       publish     = ["pypi.org", "readthedocs.org"]
     }
@@ -386,6 +388,13 @@ EOF
       description = "A library to make SCAD easier."
       topics      = ["3d-printing", "openscad", "openscad-library"]
       license     = "cc-by-4.0"
+    }
+    terraform-provider-dockerhub = {
+      description = "Register hub.docker.com repositories."
+      topics      = ["terraform", "terraform-provider", "dockerhub"]
+      license     = "mpl-2.0"
+      check       = ["go"]
+      publish     = ["github.com", "registry.terraform.io"]
     }
     terraform-provider-macaroons = {
       description = <<EOF

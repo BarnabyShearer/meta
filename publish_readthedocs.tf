@@ -51,7 +51,6 @@ resource "github_repository_file" "docs_requirments" {
   file       = "docs/requirements.txt"
   content    = <<EOF
 sphinxcontrib-autoprogram
-docutils<0.18
 EOF
   repository = github_repository.main[each.key].name
 }

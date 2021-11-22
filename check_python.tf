@@ -127,15 +127,17 @@ long_description = file: README.rst
 keywords =%{for keyword in each.value.topics} ${keyword}%{endfor}
 author = Barnaby Shearer
 author_email = b@zi.is
-repository = "https://github.com/BarnabyShearer/${each.key}"
-%{if contains(each.value.publish, "readthedocs.io")}documentation = "http://${each.key}.readthedocs.io/en/latest/"
-%{endif}classifiers =
+classifiers =
     Development Status :: 5 - Production/Stable
 %{if each.value.license == "bsd-3-clause"}    License :: OSI Approved :: BSD License
 %{endif}%{if each.value.license == "mit"}    License :: OSI Approved :: MIT License
 %{endif}%{if contains(each.value.check, "python2")}    Programming Language :: Python :: 2
 %{endif}    Programming Language :: Python :: 3
-
+project_urls =
+    Source = "https://github.com/BarnabyShearer/${each.key}"
+    Tracker = "https://github.com/BarnabyShearer/${each.key}/issues"
+%{if contains(each.value.publish, "readthedocs.org")}    Documentation = "http://${each.key}.readthedocs.io/en/latest/"
+%{endif}
 [options]
 packages = find:
 install_requires = %{for dep in lookup(each.value, "requires", [])}
