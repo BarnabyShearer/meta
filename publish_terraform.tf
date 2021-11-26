@@ -2,6 +2,7 @@ resource "github_repository_file" "tools" {
   for_each   = { for k, v in local.repos : k => v if contains(v.publish, "registry.terraform.io") }
   file       = "tools.go"
   content    = <<EOF
+//go:build tools
 // +build tools
 
 package tools

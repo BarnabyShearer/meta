@@ -1,0 +1,1 @@
+Expose metrics maintained by psycopg3's connection pool to prometheus.

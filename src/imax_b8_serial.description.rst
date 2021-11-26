@@ -1,0 +1,1 @@
+Serial interface to monitor LiPo charger.

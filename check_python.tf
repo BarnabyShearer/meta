@@ -134,9 +134,10 @@ classifiers =
 %{endif}%{if contains(each.value.check, "python2")}    Programming Language :: Python :: 2
 %{endif}    Programming Language :: Python :: 3
 project_urls =
-    Source = "https://github.com/BarnabyShearer/${each.key}"
-    Tracker = "https://github.com/BarnabyShearer/${each.key}/issues"
-%{if contains(each.value.publish, "readthedocs.org")}    Documentation = "http://${each.key}.readthedocs.io/en/latest/"
+    Source = https://github.com/BarnabyShearer/${each.key}
+    Tracker = https://github.com/BarnabyShearer/${each.key}/issues
+%{if contains(each.value.publish, "readthedocs.org")}    Documentation = https://${each.key}.readthedocs.io/en/latest/
+%{endif}%{if contains(each.value.publish, "hub.docker.com")}    Docker = https://hub.docker.com/repository/docker/barnabyshearer/${lower(each.key)}
 %{endif}
 [options]
 packages = find:

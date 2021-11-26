@@ -1,0 +1,1 @@
+Register readthedocs.org projects.

@@ -120,7 +120,7 @@ resource "github_repository_file" "docs_install" {
 Installation
 ============
 
-::
+.. code-block:: bash
 
     %{if lookup(each.value, "apt", []) != []}sudo apt install%{for package in each.value.apt} ${package}%{endfor}
     %{endif}python3 -m pip install ${each.key}

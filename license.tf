@@ -15,8 +15,14 @@ data "http" "license" {
 }
 
 resource "github_repository_file" "license" {
+  lifecycle {
+    ignore_changes = [
+      content,
+    ]
+
+  }
   for_each   = { for k, v in local.repos : k => v if v.license != null }
   file       = "LICENSE"
-  content    = replace(replace(local.license[each.value.license], "[year]", "2021"), "[fullname]", "Barnaby Shearer <b@zi.is>")
+  content    = "fish" #replace(replace(local.license[each.value.license], "[year]", "2021"), "[fullname]", "Barnaby Shearer <b@zi.is>")
   repository = github_repository.main[each.key].name
 }

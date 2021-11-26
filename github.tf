@@ -1,150 +1,52 @@
 locals {
   repos_defaults = {
-    description = ""
-    license     = "gpl-2.0"
-    topics      = []
-    link        = null
-    publish     = []
-    check       = []
-    docs        = []
+    license = "gpl-2.0"
+    topics  = []
+    link    = null
+    publish = []
+    check   = []
+    docs    = []
   }
 
   repos_repos = {
-    meta = {
-      description = "Version control for my Github Repositories."
-    }
+    meta = {}
     ADS124x = {
-      description = "ADS124x library for arduino."
-      topics      = ["arduino"]
+      topics = ["arduino"]
     }
     alexa-ping = {
-      description = "Amazon Alexa skill to check website is responding."
     }
     ankle = {
-      description = <<EOF
-A UI for visualizing a stream of location events, such as showing packages being delivered.
-
-    npm install
-    npm start
-    docker-compose up -d
-    pipenv run ./feed.py
-EOF
-      license     = "bsd-2-clause"
+      license = "bsd-2-clause"
     }
     aoc = {
-      description = "My Advent of Code."
-      link        = "https://adventofcode.com/"
-      license     = "mit"
-      topics      = ["advent-of-code"]
+      link    = "https://adventofcode.com/"
+      license = "mit"
+      topics  = ["advent-of-code"]
     }
-    basic_remote_shell = {
-      description = <<EOF
-Minimum code needed to connect to a OpenSSH Server.
-
-Note: This dose **NOT** attempt to be a _conformant_ implementation. Its goal is to take every shortcut in creating low-traffic, short lived sessions to modern OpenSSH servers.
-
-Note: Whilst my aim is keep this secure; I don't know what I am doing and you **MUST** assume it isn't.
-EOF
-    }
-    binscript = {
-      description = "Minimal self hosting Asembler."
-    }
+    basic_remote_shell = {}
+    binscript          = {}
     DockerFromScratch = {
-      description = <<EOF
-Builds docker images for a simple Python + Postgres App from scratch.
-
-Made possible by [Linux From Scratch](https://www.linuxfromscratch.org/).
-
-![That is not a Dockerfile](./meme.jpg)
-
-Favours:
-- Up to date
-- Stable
-- Default configuration
-- Most common features enabled
-- Minimal programs and libraries in each image
-
-Build and run a Nginx, uWSGI + Python, Postgres stack:
-
-    DOCKER_CONTENT_TRUST=1 COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose up -d
- 
-You can also cross-compile:
-
-    docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-    docker buildx build --platform linux/arm64 --tag=scratch-nginx --target=nginx .
-EOF
-      license     = "mit"
-      topics      = ["docker", "dockerfile"]
-      publish     = ["hub.docker.com"]
+      license = "mit"
+      topics  = ["docker", "dockerfile"]
+      publish = ["hub.docker.com"]
     }
     dockerhub = {
-      description = "Golang API client."
-      check       = ["go"]
-      publish     = ["pkg.go.dev"]
-      license     = "mpl-2.0"
-      version     = "v2"
+      check   = ["go"]
+      publish = ["pkg.go.dev"]
+      license = "mpl-2.0"
+      version = "v2"
     }
     dogoban = {
-      description = <<EOF
-Your trusty sheepdog is hungry. Help them corral the animals needed to produce their balanced food.
-     ./dogoban level001.txt
-
-Your dog responds to commands for the compass cardinal points: WASD.
-They can only herd animals away from them; so be careful not to get stuck in a corner.
-
-## Screenshot
-
-    　　　⬛⬛⬛⬛⬛　　
-    　　⬛　　　　　⬛　
-    　⬛　　　🐕　　　⬛
-    　⬛　　　　　　　⬛
-    　⬛　　　🎯　　　⬛
-    　⬛　　　　　　　⬛
-    　⬛　　　🐓　　　⬛
-    　　⬛　　　　　⬛　
-    　　　⬛⬛⬛⬛⬛　　
-EOF
-      topics      = ["game"]
-      publish     = ["pypi.org"]
+      topics  = ["game"]
+      publish = ["pypi.org"]
     }
     efm8 = {
-      description = <<EOF
-Flash via AN945: EFM8 Factory Bootloader HID.
-
-Usage
------
-
-Communication is over USB-HID. This is implemented via the `hidapi <https://github.com/trezor/cython-hidapi>`__ pthon wrapper for the `hidapi <https://github.com/signal11/hidapi>`__ native library.
-
-On linux you can use udev to grant access:
-
-::
-
-    echo 'SUBSYSTEM=="usb", ATTRS{idVendor}=="10c4", MODE="0666"' | sudo tee /etc/udev/rules.d/70-silabs.rules
-    udevadm trigger
-
-::
-
-    efm8 firmware.hex
-
-Also includes an example that resets a https://u2fzero.com/ into the bootloader and flashes in one command.
-
-::
-
-    u2fzero firmware.hex
-
-And a way to (slowly) read the firmware back
-
-::
-
-    efm8_read firmware.hex
-EOF
-      license     = "bsd-3-clause"
-      check       = ["python2", "python3"]
-      apt         = ["libusb-1.0-0-dev", "libudev-dev"]
-      publish     = ["pypi.org", "readthedocs.org"]
-      topics      = ["EFM8", "AN945", "HID", "Bootloader"]
-      docs        = ["efm8_read", "u2fzero"]
+      license = "bsd-3-clause"
+      check   = ["python2", "python3"]
+      apt     = ["libusb-1.0-0-dev", "libudev-dev"]
+      publish = ["pypi.org", "readthedocs.org"]
+      topics  = ["EFM8", "AN945", "HID", "Bootloader"]
+      docs    = ["efm8_read", "u2fzero"]
       scripts = {
         efm8      = "efm8.__main__:main"
         efm8_read = "efm8.__main__:read"
@@ -157,57 +59,8 @@ EOF
       ]
     }
     email-report-checker = {
-      description = <<EOF
-RFC 7489 & 8460 SMTP Report Monitoring Utilities.
-
-Note these are for my hobby domain, do not try running them on even moderate traffic MTAs
-
-RFC 7489 Domain-based Message Authentication, Reporting, and Conformance (DMARC)
---------------------------------------------------------------------------------
-
-First ensure your DMARC DNS TXT record contains `rua` and `ruf` to request reports:
-
-    _dmarc.zi.is.		3600	IN	TXT	"v=DMARC1; p=reject; pct=100; ruf=mailto:b+dmarc@zi.is; rua=mailto:b+dmarc@zi.is; adkim=s; aspf=s"
-
-Then load the reports via IMAP:
-
-::
-
-    ./dmarc.py m.zi.is b@zi.is Archive > dmarc.json
-
-And report your statistics
-
-::
-
-    jq '[ .[].record.row | select(.source_ip == "68.183.35.248") | select(.policy_evaluated.dkim == "pass") | .count | tonumber] | add' dmarc.json
-    jq '[ .[].record.row | select(.source_ip == "68.183.35.248") | select(.policy_evaluated.dkim == "fail") | .count | tonumber] | add' dmarc.json
-
-
-RFC 8460 SMTP TLS Reporting
----------------------------
-
-First create a DNS TXT record to request reports:
-
-::
-
-    _smtp._tls.zi.is.	3600	IN	TXT	"v=TLSRPTv1;rua=mailto:b+tls@zi.is"
-
-Then load the reports via IMAP:
-
-::
-
-    ./tls.py m.zi.is b@zi.is Archive > tls.json
-
-And report your statistics
-
-::
-
-    jq '[.[] | [.policies[].summary["total-successful-session-count"]] | add] | add' tls.json
-    jq '[.[] | [.policies[].summary["total-failure-session-count"]] | add] | add' tls.json
-
-EOF
-      license     = "bsd-3-clause"
-      check       = ["python3"]
+      license = "bsd-3-clause"
+      check   = ["python3"]
       scripts = {
         "dmarc.py" = "email_report_checker.dmarc:main"
         "tls.py"   = "email_report_checker.tls:main"
@@ -215,24 +68,8 @@ EOF
       publish = ["pypi.org", "readthedocs.org"]
     }
     htmloverpdf = {
-      description = <<EOF
-Render a HTML overlay over existing PDF files.
-
-A wrapper for https://weasyprint.org/ which allows compositing with existing PDF files.
-            
-It parses the HTML looking for <img> tags with src urls ending ".pdf". Each one begins a new page and copies all source pages overlaying the weasyprint output.
-The magic value "blank.pdf" outputs sections HTML without overlaying.
-
-Usage
------
-
-::
-
-    htmloverpdf < test.html > test.pdf
-
-EOF
-      license     = "bsd-3-clause"
-      topics      = ["pdf"]
+      license = "bsd-3-clause"
+      topics  = ["pdf"]
       scripts = {
         htmloverpdf = "htmloverpdf.__main__:main"
       }
@@ -242,8 +79,7 @@ EOF
       publish  = ["pypi.org", "readthedocs.org", "hub.docker.com"]
     }
     imax_b8_serial = {
-      description = "Serial interface to monitor LiPo charger."
-      requires    = ["pyserial"]
+      requires = ["pyserial"]
       scripts = {
         imax_b8_serial = "imax_b8_serial.__main__:main"
       }
@@ -251,95 +87,37 @@ EOF
       publish = ["pypi.org", "readthedocs.org"]
     }
     kibblekhaos = {
-      description = "Your trusty space dog is hungry. You have travelled to the farm belt where the nutrient asteroids grow."
-      link        = "https://kibblekhaos.zi.is/"
-      topics      = ["game"]
+      link   = "https://kibblekhaos.zi.is/"
+      topics = ["game"]
     }
-    "kvm.py" = {
-      description = "Minimalist python to run amd64 code via kvm."
-    }
+    "kvm.py" = {}
     lektor-make = {
-      description = "Lektor plugin to run `make lektor` for custom build systems."
-      license     = "mit"
-      topics      = ["lektor"]
-      requires    = ["lektor", "typing; python_version < \"3\"", ]
-      check       = ["python2", "python3"]
-      publish     = ["pypi.org", "readthedocs.org"]
+      license  = "mit"
+      topics   = ["lektor"]
+      requires = ["lektor", "typing; python_version < \"3\"", ]
+      check    = ["python2", "python3"]
+      publish  = ["pypi.org", "readthedocs.org"]
     }
     pgwebsocket = {
-      description = <<EOF
-Async websocket to PostgreSQL proxy.
-
-Usage
------
-
-.. code-block:: python
-
-    from pgwebsocket import PgWebsocket
-    
-    app = PgWebsocket("")
-    
-    @app.on_connect
-    async def _on_connect(ctx):
-        await ctx.execute("LISTEN clients;")
-    
-    @app.on_disconnect
-    async def _on_disconnect(ctx):
-        await ctx.execute("UNLISTEN clients;")
-    
-    if __name__ == '__main__':
-        app.run()
-
-EOF
-      license     = "gpl-2.0"
-      topics      = ["postgresql"]
-      requires    = ["aiohttp", "psycopg"]
-      check       = ["python3"]
-      publish     = ["pypi.org", "readthedocs.org"]
+      license  = "gpl-2.0"
+      topics   = ["postgresql"]
+      requires = ["aiohttp", "psycopg"]
+      check    = ["python3"]
+      publish  = ["pypi.org", "readthedocs.org"]
     }
     psycopg-pool-prometheus = {
-      description = "Expose metrics maintained by psycopg3's connection pool to prometheus."
-      license     = "mit"
-      topics      = ["prometheus", "psycopg3"]
-      check       = ["python3"]
-      publish     = ["pypi.org", "readthedocs.org"]
+      license = "mit"
+      topics  = ["prometheus", "psycopg3"]
+      check   = ["python3"]
+      publish = ["pypi.org", "readthedocs.org"]
       requires = [
         "psycopg[pool]",
         "prometheus_client",
       ]
     }
     pynfc = {
-      description = <<EOF
-`ctypeslib` converted libnfc and libfreefare.
-
-Usage
------
-::
-
-    from pynfc import Nfc, Desfire, Timeout
-    
-    n = Nfc("pn532_uart:/dev/ttyUSB0:115200")
-    
-    DESFIRE_DEFAULT_KEY = b'\x00' * 8
-    MIFARE_BLANK_TOKEN = b'\xFF' * 1024 * 4
-    
-    for target in n.poll():
-        try:
-            print(target.uid, target.auth(DESFIRE_DEFAULT_KEY if type(target) == Desfire else MIFARE_BLANK_TOKEN))
-        except TimeoutException:
-            pass
-
-Develop
--------
-::
-
-    sudo apt install libfreefare-dev libclang-5.0-dev
-    git clone https://github.com/BarnabyShearer/pynfc.git
-    cd pynfc
-    python3 setup.py develop --user
-EOF
-      license     = "bsd-3-clause"
-      topics      = ["RFID", "NFC", "Mifare", "Desfire"]
+      license = "bsd-3-clause"
+      topics  = ["RFID", "NFC", "Mifare", "Desfire"]
       requires = [
         "typing; python_version < \"3\"",
       ]
@@ -349,79 +127,52 @@ EOF
       build         = ["ctypeslib2 ; python_version > '3'"]
       use_py3_build = true
     }
-    pypg = {
-      description = "Minimal Toy PGP in pure python."
-    }
+    pypg = {}
     readthedocs = {
-      description = "Golang API client."
-      check       = ["go"]
-      publish     = ["pkg.go.dev"]
-      license     = "mpl-2.0"
-      version     = "v3"
+      check   = ["go"]
+      publish = ["pkg.go.dev"]
+      license = "mpl-2.0"
+      version = "v3"
     }
-    rov = {
-      desription = <<EOF
-Underwater ROV Prototype.
-Underwater ROV Prototype.
-
-Target specifications:
-- Live 1080p video.
-- 0-100m depth.
-- Cost efficient and reproducable.
-
-## Development
-
-Editable in [OpenSCAD](https://www.openscad.org/downloads.html).
-
-[Preview](./rov.stl)
-
-[BOM](./BOM.txt)
-
-![Full](./rov001.png)
-
-![Transparent](./rov002.png)
-
-![](./rov003.png)
-EOF
-    }
+    rov = {}
     scadhelper = {
-      description = "A library to make SCAD easier."
-      topics      = ["3d-printing", "openscad", "openscad-library"]
-      license     = "cc-by-4.0"
+      topics  = ["3d-printing", "openscad", "openscad-library"]
+      license = "cc-by-4.0"
     }
     terraform-provider-dockerhub = {
-      description = "Register hub.docker.com repositories."
-      topics      = ["terraform", "terraform-provider", "dockerhub"]
-      license     = "mpl-2.0"
-      check       = ["go"]
-      publish     = ["github.com", "registry.terraform.io"]
+      topics  = ["terraform", "terraform-provider", "dockerhub"]
+      license = "mpl-2.0"
+      check   = ["go"]
+      publish = ["github.com", "registry.terraform.io"]
     }
     terraform-provider-macaroons = {
-      description = <<EOF
-Macaroons are flexible authorization credentials that support decentralized delegation, attenuation, and verification. Given an existing credential this provider can attenuate it for a specific use.
-
-At the moment it is tested for scoping a pypi.org's API token per project (PRs for other uses welcome).
-EOF
-      topics      = ["terraform", "terraform-provider", "macaroons", "pypi"]
-      license     = "mpl-2.0"
-      check       = ["go"]
-      publish     = ["github.com", "registry.terraform.io"]
+      topics  = ["terraform", "terraform-provider", "macaroons", "pypi"]
+      license = "mpl-2.0"
+      check   = ["go"]
+      publish = ["github.com", "registry.terraform.io"]
     }
     terraform-provider-readthedocs = {
-      description = "Register readthedocs.org projects."
-      topics      = ["terraform", "terraform-provider", "readthedocs"]
-      license     = "mpl-2.0"
-      check       = ["go"]
-      publish     = ["github.com", "registry.terraform.io"]
+      topics  = ["terraform", "terraform-provider", "readthedocs"]
+      license = "mpl-2.0"
+      check   = ["go"]
+      publish = ["github.com", "registry.terraform.io"]
+    }
+    tftool = {
+      topics  = ["terraform"]
+      license = "mpl-2.0"
+      check   = ["python3"]
+      publish = ["pypi.org", "readthedocs.org", "hub.docker.com"]
+      scripts = {
+        tftool = "tftool.__main__:main"
+      }
     }
     things = {
-      description = "Designs for lasercutting, 3D printing, milling etc."
-      topics      = ["3d-printing"]
-      license     = null
+      topics  = ["3d-printing"]
+      license = null
     }
   }
   repos = { for k, v in merge(
     { for k, v in local.repos_repos : k => merge(local.repos_defaults, v) },
-  ) : k => merge(v, { topics = toset(concat(local.repos_defaults.topics, v.topics)) }) }
+  ) : k => merge(v, { topics = toset(concat(local.repos_defaults.topics, v.topics)), description = try(file("src/${k}.description.md"), file("src/${k}.description.rst")) }) }
 
 }
