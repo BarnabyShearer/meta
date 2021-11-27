@@ -38,7 +38,8 @@ locals {
     }
     dogoban = {
       topics  = ["game"]
-      publish = ["pypi.org"]
+      check   = ["python3"]
+      publish = ["pypi.org", "hub.docker.com"]
     }
     efm8 = {
       license = "bsd-3-clause"
@@ -78,10 +79,10 @@ locals {
       check    = ["python3"]
       publish  = ["pypi.org", "readthedocs.org", "hub.docker.com"]
     }
-    imax_b8_serial = {
+    imax-b8-serial = {
       requires = ["pyserial"]
       scripts = {
-        imax_b8_serial = "imax_b8_serial.__main__:main"
+        imax-b8-serial = "imax_b8_serial.__main__:main"
       }
       check   = ["python3"]
       publish = ["pypi.org", "readthedocs.org"]
@@ -97,6 +98,9 @@ locals {
       requires = ["lektor", "typing; python_version < \"3\"", ]
       check    = ["python2", "python3"]
       publish  = ["pypi.org", "readthedocs.org"]
+      "lektor.plugins" = {
+         make = "lektor_make:MakePlugin"
+      }
     }
     pgwebsocket = {
       license  = "gpl-2.0"

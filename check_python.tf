@@ -124,6 +124,7 @@ resource "github_repository_file" "setup_cfg" {
 name = ${each.key}
 description = ${split("\n", each.value.description)[0]}
 long_description = file: README.rst
+long_description_content_type = text/x-rst
 keywords =%{for keyword in each.value.topics} ${keyword}%{endfor}
 author = Barnaby Shearer
 author_email = b@zi.is
@@ -133,7 +134,9 @@ classifiers =
 %{endif}%{if each.value.license == "mit"}    License :: OSI Approved :: MIT License
 %{endif}%{if contains(each.value.check, "python2")}    Programming Language :: Python :: 2
 %{endif}    Programming Language :: Python :: 3
-project_urls =
+%{if lookup(each.value, "lektor.plugins", {}) != {} }    Framework :: Lektor
+    Environment :: Plugins
+%{endif}project_urls =
     Source = https://github.com/BarnabyShearer/${each.key}
     Tracker = https://github.com/BarnabyShearer/${each.key}/issues
 %{if contains(each.value.publish, "readthedocs.org")}    Documentation = https://${each.key}.readthedocs.io/en/latest/
@@ -150,6 +153,10 @@ python_requires = >=%{if contains(each.value.check, "python2")}2.7%{else}3.7%{en
 %{if lookup(each.value, "scripts", {}) != {} }
 [options.entry_points]
 console_scripts = %{for script, entry in each.value.scripts}
+    ${script} = ${entry}%{endfor}
+%{endif}%{if lookup(each.value, "lektor.plugins", {}) != {} }
+[options.entry_points]
+lektor.plugins = %{for script, entry in each.value["lektor.plugins"]}
     ${script} = ${entry}%{endfor}
 %{endif}
 [bdist_wheel]
@@ -197,4 +204,11 @@ resource "github_actions_secret" "pypi_token" {
   repository      = github_repository.main[each.key].name
   secret_name     = "PYPI_API_TOKEN"
   plaintext_value = macaroons_pypi_token.pypi_token[each.key].token
+}
+
+resource "github_repository_file" "pytyped" {
+  for_each   = { for k, v in local.repos : k => v if contains(v.check, "python3") }
+  file       = "${replace(each.key, "-", "_")}/py.typed"
+  content    = ""
+  repository = github_repository.main[each.key].name
 }
