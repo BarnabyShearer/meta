@@ -65,7 +65,6 @@ resource "github_repository_file" "docs_makefile" {
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXPROJ    = EFM8Bootloader
 SOURCEDIR     = .
 BUILDDIR      = _build
 

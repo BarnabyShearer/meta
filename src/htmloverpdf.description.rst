@@ -8,7 +8,7 @@ The magic value "blank.pdf" outputs sections HTML without overlaying.
 Usage
 -----
 
-::
+.. code-block:: bash
 
     htmloverpdf < test.html > test.pdf
 
