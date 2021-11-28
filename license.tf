@@ -1,7 +1,3 @@
-variable "GITHUB_TOKEN" {
-  type = string
-}
-
 resource "github_repository_file" "license" {
   for_each   = { for k, v in local.repos : k => v if v.license != null }
   file       = "LICENSE"

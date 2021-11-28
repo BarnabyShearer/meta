@@ -99,7 +99,7 @@ locals {
       check    = ["python2", "python3"]
       publish  = ["pypi.org", "readthedocs.org"]
       "lektor.plugins" = {
-         make = "lektor_make:MakePlugin"
+        make = "lektor_make:MakePlugin"
       }
     }
     pgwebsocket = {
